@@ -4,45 +4,43 @@ import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
 
-class GeekBrainsChat {
+class GeekBrainsChat extends JFrame {
 
-    final JFrame frame;
+    private final JPanel chatPanel = new JPanel();
+    private final JPanel sendPanel = new JPanel();
+    private final JTextArea chatText = new JTextArea();
+    private final JScrollPane scrollChatText = new JScrollPane(chatText);
+    private final JButton send = new JButton("Send");
+    private final JTextField message = new JTextField();
+    private final JMenuBar menuBar = new JMenuBar();
+    private final JMenu file = new JMenu("File");
+    private final JMenuItem exit = new JMenuItem("Exit");
+    private final JMenu edit = new JMenu("Edit");
+    private final JMenuItem clear = new JMenuItem("Clear chat");
 
-    GeekBrainsChat(JFrame frame) {
-        try {
-            UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (UnsupportedLookAndFeelException e) {
-            e.printStackTrace();
-        }
-        this.frame = frame;
-        frame.setSize(600, 400);
-        frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        JPanel chatPanel = new JPanel();
+    GeekBrainsChat(String title) {
+        setTitle(title);
+        setSize(600, 400);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
         chatPanel.setBackground(new Color(0xFA98C0));
         chatPanel.setLayout(new BorderLayout());
 
-        JTextArea chatText = new JTextArea();
+        chatText.setLineWrap(true);
         chatText.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 15));
         chatText.setBackground(chatPanel.getBackground());
         chatText.setEditable(false);
+        chatText.setBackground(new Color(0xFFEAF3));
 
-        chatPanel.add(new JScrollPane(chatText));
+        scrollChatText.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollChatText.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+        chatPanel.add(scrollChatText);
         chatPanel.setBorder(new TitledBorder(null, "GeekBrains Chat",
-                TitledBorder.CENTER, TitledBorder.TOP, new Font(Font.MONOSPACED, Font.BOLD, 18), Color.BLACK));
+                TitledBorder.CENTER, TitledBorder.TOP, new Font(Font.MONOSPACED, Font.BOLD, 18), null));
 
-        JButton send = new JButton("Send");
-        JTextField message = new JTextField();
         message.setFont(new Font(Font.SANS_SERIF, Font.ROMAN_BASELINE, 15));
-
-        JPanel sendPanel = new JPanel();
         sendPanel.setBackground(new Color(0xFFCCE1));
         sendPanel.setLayout(new BorderLayout());
         sendPanel.add(message, BorderLayout.CENTER);
@@ -50,10 +48,8 @@ class GeekBrainsChat {
         sendPanel.setBorder(new TitledBorder(null, "",
                 TitledBorder.DEFAULT_JUSTIFICATION,
                 TitledBorder.ABOVE_TOP, null, null));
-
-        frame.add(chatPanel, BorderLayout.CENTER);
-        frame.add(sendPanel, BorderLayout.SOUTH);
-
+        add(chatPanel, BorderLayout.CENTER);
+        add(sendPanel, BorderLayout.SOUTH);
 //        Слушатели для для мыши и клавиши enter для перевода строки в окошко чата
         send.addActionListener(e -> {
             chatText.append(message.getText() + "\n");
@@ -63,26 +59,19 @@ class GeekBrainsChat {
             chatText.append(message.getText() + "\n");
             message.setText("");
         });
-
 //         Создадим меню для выхода из чата и для очистки окна чата
-        JMenuBar menuBar = new JMenuBar();
-        JMenu file = new JMenu("File");
         menuBar.add(file);
-        JMenuItem exit = new JMenuItem("Exit");
         file.add(exit);
         exit.addActionListener(e -> {
             System.exit(0);
         });
-
-        JMenu edit = new JMenu("Edit");
         menuBar.add(edit);
-        JMenuItem clear = new JMenuItem("Clear chat");
         edit.add(clear);
         clear.addActionListener(e -> {
             chatText.setText("");
         });
-
 //        Добавим меню в основное окошко
-        frame.add(menuBar, BorderLayout.NORTH);
+        add(menuBar, BorderLayout.NORTH);
+
     }
 }
