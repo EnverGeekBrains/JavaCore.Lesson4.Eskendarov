@@ -9,12 +9,24 @@ import javax.swing.*;
  * сообщений на нижней панели. Сообщение должно отсылаться либо по нажатию кнопки на
  * форме, либо по нажатию кнопки Enter. При «отсылке» сообщение перекидывается из нижнего
  * поля в центральное.
- *
  */
-public class App 
-{
+
+public class App {
+
     public static void main(String[] args) {
-        GeekBrainsChat chat =  new GeekBrainsChat(new JFrame("JAVA_CORE GUI"));
-        chat.frame.setVisible(true);
+        SwingUtilities.invokeLater(() -> {
+            try {
+                UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (UnsupportedLookAndFeelException e) {
+                e.printStackTrace();
+            }
+            new GeekBrainsChat("JAVA_CORE GUI").setVisible(true);
+        });
     }
 }
